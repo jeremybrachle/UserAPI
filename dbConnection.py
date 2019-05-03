@@ -3,7 +3,7 @@
 # this program will connect to our database to perform login, register,
 # and various other user management operations
 
-# version 1.0.0.0
+# version 1.1.0.0
 
 # import necessary libraries
 import flask
@@ -98,6 +98,58 @@ def register():
         print(e)
         return 'connection failed'
 
+
+# update the first page of records
+@app.route('/updatePage1', methods=['PUT'])
+def updatePage1():
+    try:
+        # test connection to the database
+        conn = sqlite3.connect('PlatinumMotors.db')
+        cur = conn.cursor()
+        # get the post arguments as json
+        jsonData = request.get_json()
+        # get the arguments
+        userId = jsonData['uid']
+        firstName = jsonData['firstName']
+        lastName = jsonData['lastName']
+        phone = jsonData['phone']
+        dob = jsonData['dob']
+        address = jsonData['address']
+        city = jsonData['city']
+        state = jsonData['state']
+        zip = jsonData['zip']
+        # execute the update statment
+        cur.execute('update User set firstName = \'' + str(firstName) + '\', lastName = \'' + str(lastName) + '\', phone = ' + str(phone) + ', dob = \'' + str(dob) + '\', address = \'' + str(address) + '\', city = \'' + str(city) + '\', state = \'' + str(state) + '\', zip = ' + str(zip) + ' where userID = ' + str(userId) +'')
+        cur.execute('commit;')
+        return 'connection success'
+    except Error as e:
+        print(e)
+        return 'connection failed'
+
+# update the second page of records
+@app.route('/updatePage2', methods=['PUT'])
+def updatePage2():
+    try:
+        # test connection to the database
+        conn = sqlite3.connect('PlatinumMotors.db')
+        cur = conn.cursor()
+        # get the post arguments as json
+        jsonData = request.get_json()
+        # get the arguments
+        userId = jsonData['uid']
+        cardType = jsonData['cardType']
+        cardNumber = jsonData['cardNumber']
+        csv = jsonData['csv']
+        cardHolder = jsonData['cardHolder']
+        expMonth = jsonData['expYear']
+        expYear = jsonData['expYear']
+        # execute the update statment
+        cur.execute('update User set cardType = \'' + str(cardType) + '\', cardNumber = \'' + str(cardNumber) + '\', csv = ' + str(csv) + ', cardHolder = \'' + str(cardHolder) + '\', expMonth = ' + str(expMonth) + ', expYear = ' + str(expYear) + ' where userID = ' + str(userId) + '')
+        cur.execute('commit;')
+        return 'connection success'
+    except Error as e:
+        print(e)
+        return 'connection failed'
 
 # run the API
 app.run()
