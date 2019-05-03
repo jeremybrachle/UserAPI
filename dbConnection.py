@@ -3,7 +3,7 @@
 # this program will connect to our database to perform login, register,
 # and various other user management operations
 
-# version 1.1.0.0
+# version 1.2.0.0
 
 # import necessary libraries
 import flask
@@ -145,6 +145,29 @@ def updatePage2():
         expYear = jsonData['expYear']
         # execute the update statment
         cur.execute('update User set cardType = \'' + str(cardType) + '\', cardNumber = \'' + str(cardNumber) + '\', csv = ' + str(csv) + ', cardHolder = \'' + str(cardHolder) + '\', expMonth = ' + str(expMonth) + ', expYear = ' + str(expYear) + ' where userID = ' + str(userId) + '')
+        cur.execute('commit;')
+        return 'connection success'
+    except Error as e:
+        print(e)
+        return 'connection failed'
+
+# update the third page of records
+@app.route('/updatePage3', methods=['PUT'])
+def updatePage3():
+    try:
+        # test connection to the database
+        conn = sqlite3.connect('PlatinumMotors.db')
+        cur = conn.cursor()
+        # get the post arguments as json
+        jsonData = request.get_json()
+        # get the arguments
+        userId = jsonData['uid']
+        billingAddress = jsonData['billingAddress']
+        billingCity = jsonData['billingCity']
+        billingState = jsonData['billingState']
+        billingZip = jsonData['billingZip']
+        # execute the update statment
+        cur.execute('update User set billingAddress = \'' + str(billingAddress) + '\', billingCity = \'' + str(billingCity) + '\', billingState = \'' + str(billingState) + '\', billingZip = ' + str(billingZip) + ' where userID = ' + str(userId) + '')
         cur.execute('commit;')
         return 'connection success'
     except Error as e:
