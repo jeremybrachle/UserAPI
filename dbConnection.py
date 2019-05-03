@@ -3,7 +3,7 @@
 # this program will connect to our database to perform login, register,
 # and various other user management operations
 
-# version 1.2.0.0
+# version 1.3.0.0
 
 # import necessary libraries
 import flask
@@ -168,6 +168,32 @@ def updatePage3():
         billingZip = jsonData['billingZip']
         # execute the update statment
         cur.execute('update User set billingAddress = \'' + str(billingAddress) + '\', billingCity = \'' + str(billingCity) + '\', billingState = \'' + str(billingState) + '\', billingZip = ' + str(billingZip) + ' where userID = ' + str(userId) + '')
+        cur.execute('commit;')
+        return 'connection success'
+    except Error as e:
+        print(e)
+        return 'connection failed'
+
+# update the fourth page of records
+@app.route('/updatePage4', methods=['PUT'])
+def updatePage4():
+    try:
+        # test connection to the database
+        conn = sqlite3.connect('PlatinumMotors.db')
+        cur = conn.cursor()
+        # get the post arguments as json
+        jsonData = request.get_json()
+        # get the arguments
+        userId = jsonData['uid']
+        licNumber = jsonData['licNumber']
+        licExp = jsonData['licExp']
+        licState = jsonData['licState']
+        insuranceCompany = jsonData['insuranceCompany']
+        insuranceExp = jsonData['insuranceExp']
+        insurancePhone = jsonData['insurancePhone']
+        insurancePolicy = jsonData['insurancePolicy']
+        # execute the update statment
+        cur.execute('update User set licNumber = \'' + str(licNumber) + '\', licExp = \'' + str(licExp) + '\', licState = \'' + str(licState) + '\', insuranceCompany = \'' + str(insuranceCompany) + '\', insuranceExp = \'' + str(insuranceExp) + '\' , insurancePhone = \'' + str(insurancePhone) + '\' , insurancePolicy = \'' + str(insurancePolicy) + '\'where userID = ' + str(userId) + '')
         cur.execute('commit;')
         return 'connection success'
     except Error as e:
